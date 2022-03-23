@@ -1,0 +1,23 @@
+[package]
+name = "async-session-types"
+version = "0.1.0"
+edition = "2021"
+authors = ["Akosh Farkash <aakoshh@gmail.com>"]
+description = "Asynchronous Session Types"
+keywords = ["session types", "async"]
+license = "MIT"
+repository = "https://github.com/aakoshh/async-session-types-rs"
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1.15.0", features = ["sync", "time", "macros"] }
+futures = "0.3.19"
+
+[dev-dependencies]
+tokio = { version = "1.15.0", features = ["rt-multi-thread"] }
+
+[features]
+default = ["mux"]
+mux = []
