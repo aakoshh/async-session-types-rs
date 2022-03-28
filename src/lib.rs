@@ -90,7 +90,7 @@ async fn read_chan<T, P, E, R: Repr<T>>(
     downcast(msg)
 }
 
-/// Try to read a dynamically typed message from the stay of from the channel.
+/// Try to read a dynamically typed message from the stash of from the channel.
 async fn read_chan_dyn<P, E, R>(chan: &mut Chan<P, E, R>, timeout: Duration) -> SessionResult<R> {
     match chan.stash.take() {
         Some(msg) => Ok(msg),
@@ -106,6 +106,7 @@ async fn read_chan_dyn<P, E, R>(chan: &mut Chan<P, E, R>, timeout: Duration) -> 
     }
 }
 
+/// Close the channel.
 fn close_chan<P, E, R>(chan: Chan<P, E, R>) {
     // This method cleans up the channel without running the panicky destructor
     // In essence, it calls the drop glue bypassing the `Drop::drop` method.
@@ -214,6 +215,7 @@ impl<P: HasDual> HasDual for Rec<P> {
     type Dual = Rec<P::Dual>;
 }
 
+/// Indicate whether the left or right choice was chosen in an `Offer`.
 pub enum Branch<L, R> {
     Left(L),
     Right(R),

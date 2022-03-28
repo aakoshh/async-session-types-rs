@@ -21,10 +21,10 @@ but has been extended in the following ways:
 * Timeouts are required for every receive operation.
 * The ability to abort a session with an error if some business rule has been violated; these are rules that aren't expressed in
 the protocol.
-* Using `tokio` channels so we can have multiple session types without blocking full threads while awaiting message.
+* Using `tokio` channels so we can have multiple session types without blocking full threads while awaiting the next message.
 * At any time, only one of the the server or the client are in a position to send the next message.
 * Every decision has to be represented as a message, unlike in the original which sent binary flags to indicate choice.
-* Added a [Repr](/home/aakoshh/projects/samples/rust/async-session-types-rs/src/repr.rs) type to be able to route messages to multiple session types using `enum` wrappers, instead of relying on dynamic casting.
+* Added a [Repr](src/repr.rs) type to be able to route messages to multiple session types using `enum` wrappers, instead of relying on dynamic casting.
 * Added a pair of [incoming](src/multiplexing/incoming.rs)/[outgoing](src/multiplexing/outgoing.rs) demultiplexer/multiplexer types to support dispatching to multiple session types over a single connection, like a Web Socket.
 
 Please have a look at the [tests](src/test.rs) to see examples.

@@ -7,7 +7,7 @@ pub mod outgoing;
 
 /// A multiplexed message, consisting of the ID of the protocol
 /// and dynamic content that only the corresponding session will
-/// know how to handle, and the check if it is indeed the next
+/// know how to handle, and check if it is indeed the next
 /// expected message.
 ///
 /// A message like this is coming from or going to a specific
@@ -23,11 +23,10 @@ pub mod outgoing;
 ///
 /// It is up to some higher level component to handle the wire
 /// format of the message, including turning the payload and
-/// the protocol ID into binary. For this we'll probably require
-/// all messages to implement `serde`, and use a wrapper ADT
-/// as the representation type, where we can apply tagging.
-///
-/// See https://serde.rs/enum-representations.html#internally-tagged
+/// the protocol ID into binary or JSON for example. This is
+/// what the `Repr` allows us to do, e.g. to have each message
+/// implement `serde`, wrap then in an enum, that gets serialised
+/// at the edge of the system to/from JSON.
 ///
 /// A network connection will be either incoming or outgoing,
 /// i.e. for Alice to follow Bob and for Bob to follow Alice
@@ -55,14 +54,13 @@ pub struct MultiMessage<P, R> {
     /// For example multiple protocols can expect a `String`.
     pub protocol_id: P,
 
-    /// For now this is exactly the dynamic message that the session uses,
-    /// but that won't work on the wire protocol without tagging. It will
-    /// probably make more sense to turn it into an opaque representation
-    /// that we have serialisers/deserialiser for based on the protocol ID.
+    /// The payload is the `Repr` representation of the message,
+    /// to be (un)wrapped by the session.
     pub payload: R,
 }
 
 impl<P, R> MultiMessage<P, R> {
+    /// Wrap a raw message that has a `Repr` into a `MultiMessage`.
     pub fn new<T: Send + 'static>(protocol_id: P, msg: T) -> Self
     where
         R: Repr<T>,

@@ -47,6 +47,7 @@ impl<P: Ord + Copy + Debug, R> IncomingMultiChannel<P, R> {
     where
         F: FnMut(P, Sender<SessionError>) -> (Sender<R>, Receiver<R>),
     {
+        // NOTE: The following comment illustrates the original synchronous version, but the gist of it is the same.
         // In a loop, add the `rx` of `demux`, and all the `rxs` of `mux` to a `Select`, see which one is ready:
         // * If `error.rx` returns `Ok` then a protocol violation occurred and we can exit the loop.
         // * If `demux.rx` returns `Ok` then get or create the protocol in both `mux` and `demux`, and dispatch into the corresponding channel in `demux.txs`.

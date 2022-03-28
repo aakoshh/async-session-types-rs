@@ -128,7 +128,8 @@ impl<P: Ord + Copy, R: 'static + Send + Sync> OutgoingMultiChannel<P, R> {
         }
     }
 
-    // We need exactly one function to produce the future that gets pushed into the `FuturesUnordered` otherwise it would have multiple types.
+    // We need exactly one function to produce the future that gets pushed into the
+    // `FuturesUnordered` otherwise it would have multiple conflicting anonymous types.
     async fn recv_outgoing(pid: P, mut rx: Receiver<R>) -> (P, Option<R>, Receiver<R>) {
         let o = rx.recv().await;
         (pid, o, rx)
