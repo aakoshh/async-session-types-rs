@@ -51,7 +51,7 @@ impl<T: 'static + Send + Sync> Repr<T> for DynMessage {
     }
 }
 
-/// The `repr_impl` macro creates `Repr` implementations for a typed used on the wire,
+/// The `repr_impl` macro creates `Repr` implementations for a type used on the wire,
 /// for each protocol message type enumerated in the call.
 ///
 /// The macro call consists of `<wrapper-type-name>`, followed by lines of:
@@ -107,8 +107,8 @@ macro_rules! repr_impl {
     };
 }
 
-/// The `repr_bound` macro creates a type alias that can be used a bound for the generic
-/// wire type and list all messages used by the protocol.
+/// The `repr_bound` macro creates a type alias that can be used as bound for the generic
+/// wire type, instead of listing all messages used by the protocol.
 ///
 /// # Example
 /// ```

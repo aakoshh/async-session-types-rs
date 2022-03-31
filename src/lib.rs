@@ -377,6 +377,7 @@ impl<P, E, N, R> Chan<Var<S<N>>, (P, E), R> {
 type ChanPair<P, R> = (Chan<P, (), R>, Chan<<P as HasDual>::Dual, (), R>);
 type ChanDynPair<P, R> = (Chan<P, (), R>, (Sender<R>, Receiver<R>));
 
+/// Create a pair of server and client channels for a given protocol `P`.
 pub fn session_channel<P: HasDual, R>() -> ChanPair<P, R> {
     let (tx1, rx1) = unbounded_channel();
     let (tx2, rx2) = unbounded_channel();
